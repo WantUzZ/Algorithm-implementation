@@ -1,8 +1,8 @@
 /**
  * Copyright: Copyright (c) 2015-2020 honglian
  *
- * @FileName: shortPath.js
- * @Description: 有向图的最短路径算法
+ * @FileName: dfs.js
+ * @Description: 基于深度优先搜索有向图的最短路径算法
  * @version: v1.0.0
  * @author: wantu
  * @date: 2018/9/11
