@@ -15,28 +15,29 @@
  */
 
 function init(){
-  let a = [2,3,43,23,12,44,99];
+  let a = [222,333,43,23,12,44,99];
   return a;
 };
 
 function sort(arr){
-  for(let i = 0;i < arr.length;i++){
-    for(let j = i + 1;j < arr.length - 1 - i ;j++){
-        if(arr[i] > arr[j]){
-          let temp = arr[i];
-          arr[i] = arr[j];
-          arr[j] = temp;
+  //外层循环是每次pull出整个待排序数组的最大值到数组的最右侧
+  for(let i = 0;i < arr.length - 1;i++){
+    for(let j = 0 ;j < arr.length - 1 - i ;j++){
+        if(arr[j] > arr[j+1]){
+          let temp = arr[j];
+          arr[j] = arr[j+1];
+          arr[j+1] = temp;
         }
-        console.info(arr)
     }
+    console.info(arr);
   }
-  console.info(arr);
   return arr;
 };
 
 function main(){
   let data = init();
   let result = sort(data);
+  console.info(`排序结果为：${result}`);
 }
 
 main();
