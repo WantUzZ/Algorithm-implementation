@@ -61,6 +61,7 @@ function initData(){
         new Side(5,2,5,6),
         new Side(6,2,6,30),
         new Side(8,5,6,7),
+        new Side(9,1,6,77),
     ]
     return {
         nodeArr:nodeArr,
@@ -144,25 +145,38 @@ function notInEndNodeArr(sourceNodeId,deadNodeArr){
  * @param nodeSearchNum 已经搜索节点数量
  * @param deadNodeArr   尾节点数组
  */
-function findNextNode(obj,sideArr,nodeMovePath,nodeArrLength,nodeSearchNum,deadNodeArr){
+function findNextNode(obj,sideArr,nodeMovePath,nodeArrLength,nodeSearchNum,deadNodeArr,pathLengthObj){
     while(nodeSearchNum < nodeArrLength){
         let flag = false;
         for(let item of sideArr){
             if(item.sourceNodeId === obj.start && !notInEndNodeArr(item.targetNodeId,deadNodeArr)){
                 nodeSearchNum ++;
                 nodeMovePath.push(item.targetNodeId);
+                // console.info(`要加：${item.length}`);
+                pathLengthObj.value += item.length;
                 if(item.targetNodeId === obj.end){
                     console.info(nodeMovePath.toString());
+                    console.info(`本次移动路径长度：${pathLengthObj.value}`);
                     nodeMovePath.pop();
+                    // console.info(`要减：${item.length}`);
+                    pathLengthObj.value -= item.length;
                     continue ;
                 }
                 obj.start = item.targetNodeId;
-                findNextNode(obj,sideArr,nodeMovePath,nodeArrLength,nodeSearchNum,deadNodeArr)
+                findNextNode(obj,sideArr,nodeMovePath,nodeArrLength,nodeSearchNum,deadNodeArr,pathLengthObj)
             }
         }
         //尾节点
         if(!flag){
+            // console.info(`尾节点：`+nodeMovePath[nodeMovePath.length - 1])
             deadNodeArr.push(nodeMovePath[nodeMovePath.length - 1]);
+            for(let item of sideArr){
+                if(item.sourceNodeId === nodeMovePath[nodeMovePath.length -2] && item.targetNodeId === nodeMovePath[nodeMovePath.length -1]){
+                    // console.info(`要减：${item.length}`);
+                    pathLengthObj.value -= item.length;
+                    // console.info('path长度：'+pathLengthObj.value);
+                }
+            }
             nodeMovePath.pop();
             obj.start = nodeMovePath[nodeMovePath.length - 1];
             break;
@@ -181,14 +195,13 @@ function findNextNode(obj,sideArr,nodeMovePath,nodeArrLength,nodeSearchNum,deadN
 function getShortPath(obj,nodeArr,sideArr){
 
     let nodeMovePath = [];
-    let sideMovePath = [];
     //尾节点
     let deadNodeArr  = [];
     let nodeArrLength = nodeArr.length;
-    let newStartNode;
+    let pathLengthObj = {value:0};
     let nodeSearchNum = 1;
     nodeMovePath.push(obj.start);
-    findNextNode(obj,sideArr,nodeMovePath,nodeArrLength,nodeSearchNum,deadNodeArr);
+    findNextNode(obj,sideArr,nodeMovePath,nodeArrLength,nodeSearchNum,deadNodeArr,pathLengthObj);
 
 
 }
@@ -200,15 +213,15 @@ function main(){
     let end = getInputNode().endNodeId;
 
     let nodeIsExit = nodeIsInNodeArr(start,end,nodeArr);
-    //直连也不一定就是最短路
     let haveDirectPathLength = haveDirectPath(start,end,sideArr);
     if(!nodeIsExit){
         console.info('开始节点或者结束节点并不存在...');
-    }else if(haveDirectPathLength < MAX_LENGTH){
-        console.info('开始节点与结束节点之间存在直连情况。边长为：'+haveDirectPathLength);
-    }else{
-        getShortPath({start:start,end:end},nodeArr,sideArr);
     }
+    //直连也不一定就是最短路
+    if(haveDirectPathLength < MAX_LENGTH){
+        console.info('开始节点与结束节点之间存在直连情况。边长为：'+haveDirectPathLength);
+    }
+    getShortPath({start:start,end:end},nodeArr,sideArr);
 }
 
 main();

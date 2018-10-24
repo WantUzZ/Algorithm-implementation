@@ -1,1 +1,8 @@
+node_modules/*
+cytoscapeTest/
+package-lock.json
+test.js
+test2.js
+.DS_Store
+test.js
 .idea/*

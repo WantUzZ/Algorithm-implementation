@@ -11,7 +11,6 @@
  * Date         Author          Version            Description
  *---------------------------------------------------------*
  *
- *
  */
 
 function init(){
@@ -20,7 +19,7 @@ function init(){
 };
 
 function sort(arr){
-  //外层循环是每次pull出整个待排序数组的最大值到数组的最右侧
+  //外层循环是每次pull出整个待排序数组的最值（大/小）到数组的一侧（左侧/右侧）
   for(let i = 0;i < arr.length - 1;i++){
     for(let j = 0 ;j < arr.length - 1 - i ;j++){
         if(arr[j] > arr[j+1]){
