@@ -24,7 +24,7 @@ Heap.prototype = (function(){
   for(let i of a){
       a[i] = 0;
   }
-  var _shift_up = function(i){
+  var _shiftUp = function(i){
       while (i > 1) {
         if (a[i >> 1] > a[i]) {
             // swap(a[i >> 1], a[i]);
@@ -37,7 +37,7 @@ Heap.prototype = (function(){
         }
     }
   };
-  var _shift_down = function(i,size){
+  var _shiftDown = function(i,size){
       while ((i << 1) < size) {
         let t = i << 1;
         if (t <= size && a[t] > a[t + 1])
@@ -62,7 +62,7 @@ Heap.prototype = (function(){
         size ++;
         a[size] = data;
         console.info('push seccess ...')
-        _shift_up(size);
+        _shiftUp(size);
       }
     },
     pop:function(){
@@ -71,7 +71,7 @@ Heap.prototype = (function(){
       a[1] = op2 - a[1];
       a[size] = op2 - a[1];
       size --;
-      _shift_down(1,size);
+      _shiftDown(1,size);
       return op;
     },
     getArr:function(i){
